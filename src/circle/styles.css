@@ -1,0 +1,32 @@
+
+.circle-container {
+}
+.circle-container__circle {
+    position: relative;
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+}
+
+.circle-container__circle--border {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    border-radius: 9999px;
+    border-width: 1px;
+    border-color: rgb(68 64 60);
+}
+
+.circle-container__inner-circle {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    bottom: 0.25rem;
+    left: 0.25rem;
+    border-radius: 9999px;
+}
+
+.circle-container__inner-circle--bg {
+    background-color: rgb(12 10 9);
+}
