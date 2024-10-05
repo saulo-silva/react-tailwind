@@ -36,6 +36,15 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+      'react/jsx-tag-spacing': [
+        'error',
+        {
+          'closingSlash': 'never',
+          'beforeSelfClosing': 'always',
+          'afterOpening': 'never',
+          'beforeClosing': 'never'
+        }
+      ]
     },
   },
 ]

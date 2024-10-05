@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { cn } from "./utils";
 
-import Stepper from './stepper';
+import { Stepper } from './components/stepper';
 
 function StepperExample() {
   const [active, setActive] = useState(0);
@@ -58,7 +58,7 @@ function StepperExample() {
 function App() {
   return (
     <div className='flex h-screen flex-col items-center justify-center gap-4 bg-gray-50'>
-      <StepperExample/>
+      <StepperExample />
     </div>
   )
 }

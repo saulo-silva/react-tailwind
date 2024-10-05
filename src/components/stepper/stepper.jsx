@@ -1,7 +1,7 @@
 import React, { createContext, useContext, Children, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 
-import { Circle } from "./circle";
+import { Circle } from "../circle/index.js";
 
 const StepperContext = createContext({ active: 0, onStepClick: () => {} });
 

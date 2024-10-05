@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { cn } from "./utils"
+import { cn } from "../utils.js"
 
 function Divisor({ className, orientation = "horizontal", label, color = "black" }) {
   const colorClasses = {
