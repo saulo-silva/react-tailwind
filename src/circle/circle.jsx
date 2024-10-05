@@ -1,4 +1,3 @@
-// import './styles.css'
 import PropTypes from 'prop-types';
 
 const Circle = ({ status, onClick }) => {
@@ -24,11 +23,11 @@ const Circle = ({ status, onClick }) => {
   };
 
   return (
-    <div className='circle-container' onClick={onClick ? onClick : undefined}>
-      <div className={`relative inset-0 size-4 cursor-pointer rounded-full ${getColor().border}`}>
+    <button type='button' onClick={onClick ? onClick : undefined}>
+      <div className={`relative inset-0 size-4 rounded-full ${getColor().border}`}>
         <div className={`absolute inset-1 rounded-full ${getColor().bg}`} />
       </div>
-    </div>
+    </button>
   )
 }
 

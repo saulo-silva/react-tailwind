@@ -1,12 +1,7 @@
 import PropTypes from 'prop-types';
 import { cn } from "./utils"
 
-function Divisor({
-                                  className,
-                                  orientation = "horizontal",
-                                  label,
-                                  color = "black",
-                                }) {
+function Divisor({ className, orientation = "horizontal", label, color = "black" }) {
   const colorClasses = {
     black: "bg-gray-300",
     red: "bg-red-700",
