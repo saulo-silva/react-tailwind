@@ -2,6 +2,7 @@ import { useState } from "react";
 import { cn } from "./utils";
 
 import { Stepper } from './components/stepper';
+import Step1 from "./components/stepper/step1.jsx";
 
 function StepperExample() {
   const [active, setActive] = useState(0);
@@ -14,17 +15,25 @@ function StepperExample() {
   return (
     <div className="w-[600px]">
       <Stepper active={active} onStepClick={setActive}>
-        <Stepper.Step label="First step" description="Create an account">
-          Step 1 content: Create an account
+        <Stepper.Step>
+          <Step1 />
         </Stepper.Step>
-        <Stepper.Step label="Second step" description="Verify email">
-          Step 2 content: Verify email
+        <Stepper.Step>
+          <div className="border p-2">
+            Step 2 content: Verify email
+          </div>
+
         </Stepper.Step>
-        <Stepper.Step label="Final step" description="Get full access">
-          Step 3 content: Get full access
+        <Stepper.Step>
+          <div className="border p-2">
+            Step 3 content: Get full access
+          </div>
+
         </Stepper.Step>
         <Stepper.Completed>
-          Completed, click back button to get to previous step
+          <div className="border p-2">
+            Completed, click back button to get to previous step
+          </div>
         </Stepper.Completed>
       </Stepper>
       <div className="mt-4 flex items-center justify-center gap-4 border p-2">

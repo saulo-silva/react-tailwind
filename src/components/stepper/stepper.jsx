@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Circle } from "../circle/index.js";
 
-const StepperContext = createContext({ active: 0, onStepClick: () => {} });
+export const StepperContext = createContext({ active: 0, onStepClick: () => {} });
 
 export const Stepper = ({ children, active, onStepClick }) => {
   const steps = Children.toArray(children).filter(child => child.type !== Stepper.Completed);
@@ -39,10 +39,12 @@ const Step = ({ label, description, step }) => {
   return (
     <div className="flex flex-col items-center">
       <Circle status={status} onClick={() => onStepClick(step)} />
-      <div className="mt-2 text-center">
-        <div className="text-sm">{label}</div>
-        <div className="text-sm text-gray-500">{description}</div>
-      </div>
+      {label || description && (
+        <div className="mt-2 text-center">
+          {label && <div className="text-sm">{label}</div>}
+          {label && description && <div className="text-sm text-gray-500">{description}</div>}
+        </div>
+      )}
     </div>
   );
 };
@@ -61,8 +63,8 @@ Stepper.propTypes = {
 Stepper.Step = Step;
 Step.displayName = 'Stepper.Step';
 Step.propTypes = {
-  label: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  description: PropTypes.string,
   step: PropTypes.number,
   children: PropTypes.node.isRequired,
 };
