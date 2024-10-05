@@ -1,7 +1,9 @@
 import React, { createContext, useContext, Children, cloneElement } from 'react';
-// import { Circle } from "./circle/index.js";
+import PropTypes from 'prop-types';
 
-const StepperContext = createContext();
+import { Circle } from "./circle";
+
+const StepperContext = createContext({ active: 0, onStepClick: () => {} });
 
 export const Stepper = ({ children, active, onStepClick }) => {
   const steps = Children.toArray(children).filter(child => child.type !== Stepper.Completed);
@@ -28,31 +30,47 @@ export const Stepper = ({ children, active, onStepClick }) => {
   );
 };
 
-Stepper.Step = ({ label, description, step, children }) => {
+const Step = ({ label, description, step }) => {
   const { active, onStepClick } = useContext(StepperContext);
   const isActive = step === active;
   const isCompleted = step < active;
+  const status = isActive ? 'current' : isCompleted ? 'completed' : 'awaiting';
 
   return (
     <div className="flex flex-col items-center">
-      <button
-        onClick={() => onStepClick(step)}
-        className={`flex size-10 items-center justify-center rounded-full font-bold text-white
-          ${isCompleted ? 'bg-green-500' : isActive ? 'bg-blue-500' : 'bg-gray-300'}`}
-      >
-        {isCompleted ? '✓' : step + 1}
-      </button>
-      {/*<Circle />*/}
+      <Circle status={status} onClick={() => onStepClick(step)} />
       <div className="mt-2 text-center">
-        <div className="font-medium">{label}</div>
+        <div className="text-sm">{label}</div>
         <div className="text-sm text-gray-500">{description}</div>
       </div>
     </div>
   );
 };
 
-Stepper.Completed = ({ children }) => {
+const Completed = ({ children }) => {
   return <div className="text-center font-bold text-green-500">{children}</div>;
+};
+
+Stepper.displayName = 'Stepper';
+Stepper.propTypes = {
+  children: PropTypes.node.isRequired,
+  active: PropTypes.number.isRequired,
+  onStepClick: PropTypes.func.isRequired,
+};
+
+Stepper.Step = Step;
+Step.displayName = 'Stepper.Step';
+Step.propTypes = {
+  label: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  step: PropTypes.number,
+  children: PropTypes.node.isRequired,
+};
+
+Stepper.Completed = Completed;
+Completed.displayName = 'Stepper.Completed';
+Completed.propTypes = {
+  children: PropTypes.node.isRequired,
 };
 
 export default Stepper;

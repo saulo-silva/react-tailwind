@@ -1,14 +1,15 @@
-import Divisor from './divisor.jsx'
-import { Circle } from './circle/index.js'
-// import StepperExample from "./stepper.jsx";
+import { useState } from "react";
+import { cn } from "./utils";
 
 import Stepper from './Stepper';
-import { useState } from "react";
 
 function StepperExample() {
   const [active, setActive] = useState(0);
   const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
+  const isFirstStep = active === 0;
+  const isLastStep = active === 3;
+  const isBeforeLastStep = active === 2;
 
   return (
     <div className="w-[600px]">
@@ -29,17 +30,25 @@ function StepperExample() {
       <div className="mt-4 flex items-center justify-center gap-4 border p-2">
         <button
           onClick={prevStep}
-          disabled={active === 0}
-          className="rounded bg-blue-500 px-4 py-2 text-white"
+          disabled={isFirstStep}
+          className={
+          cn(
+            "rounded px-4 py-2 text-white",
+            isFirstStep ? "bg-gray-300" : "bg-blue-500"
+          )}
         >
           Back
         </button>
         <button
           onClick={nextStep}
-          disabled={active === 3}
-          className="rounded bg-blue-500 px-4 py-2 text-white"
+          disabled={isLastStep}
+          className={
+          cn(
+            "rounded px-4 py-2 text-white",
+            isBeforeLastStep ? "bg-orange-400" : isLastStep ? "bg-gray-300" : "bg-blue-500"
+          )}
         >
-          Next
+          {isBeforeLastStep ? "Finish" : "Next"}
         </button>
       </div>
     </div>
@@ -49,15 +58,6 @@ function StepperExample() {
 function App() {
   return (
     <div className='flex h-screen flex-col items-center justify-center gap-4 bg-gray-50'>
-      <div className='w-full max-w-[90%] sm:w-1/6'>
-        <div className='flex w-full flex-row'>
-          <Circle/>
-          <Divisor/>
-          <Circle/>
-          <Divisor/>
-          <Circle/>
-        </div>
-      </div>
       <StepperExample/>
       <div>
         conteúdo aqui
