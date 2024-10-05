@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { cn } from "./utils";
 
-import Stepper from './Stepper';
+import Stepper from './stepper';
 
 function StepperExample() {
   const [active, setActive] = useState(0);
