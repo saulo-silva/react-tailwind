@@ -6,11 +6,12 @@ import Step1 from "./components/stepper/step1.jsx";
 
 function StepperExample() {
   const [active, setActive] = useState(0);
-  const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
+  const qtdSteps = 4;
+  const nextStep = () => setActive((current) => (current < qtdSteps ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
   const isFirstStep = active === 0;
-  const isLastStep = active === 3;
-  const isBeforeLastStep = active === 2;
+  const isLastStep = active === qtdSteps;
+  const isBeforeLastStep = active === (qtdSteps - 1);
 
   return (
     <div className="w-[600px]">
@@ -28,7 +29,11 @@ function StepperExample() {
           <div className="border p-2">
             Step 3 content: Get full access
           </div>
-
+        </Stepper.Step>
+        <Stepper.Step>
+          <div className="border p-2">
+            Step 4 content: Get full access
+          </div>
         </Stepper.Step>
         <Stepper.Completed>
           <div className="border p-2">
@@ -46,7 +51,7 @@ function StepperExample() {
             isFirstStep ? "bg-gray-300" : "bg-blue-500"
           )}
         >
-          Back
+          Voltar
         </button>
         <button
           onClick={nextStep}
@@ -57,7 +62,7 @@ function StepperExample() {
             isBeforeLastStep ? "bg-orange-400" : isLastStep ? "bg-gray-300" : "bg-blue-500"
           )}
         >
-          {isBeforeLastStep ? "Finish" : "Next"}
+          {isBeforeLastStep || isLastStep ? "Enviar" : "Continuar"}
         </button>
       </div>
     </div>
