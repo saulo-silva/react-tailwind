@@ -4,14 +4,30 @@ import { cn } from "./utils";
 import { Stepper } from './components/stepper';
 import Step1 from "./components/stepper/step1.jsx";
 
-function StepperExample() {
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+const useStepper = (qtdSteps) => {
   const [active, setActive] = useState(0);
-  const qtdSteps = 4;
-  const nextStep = () => setActive((current) => (current < qtdSteps ? current + 1 : current));
-  const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
+  const nextStep = () => setActive((current) => clamp(current + 1, 0, qtdSteps));
+  const prevStep = () => setActive((current) => clamp(current - 1, 0, qtdSteps));
   const isFirstStep = active === 0;
   const isLastStep = active === qtdSteps;
-  const isBeforeLastStep = active === (qtdSteps - 1);
+  const isBeforeLastStep = active === qtdSteps - 1;
+
+  return {
+    active,
+    setActive,
+    nextStep,
+    prevStep,
+    isFirstStep,
+    isLastStep,
+    isBeforeLastStep,
+  };
+};
+
+function StepperExample() {
+  const qtdSteps = 4;
+  const { active, setActive, nextStep, prevStep, isFirstStep, isLastStep, isBeforeLastStep } = useStepper(qtdSteps);
 
   return (
     <div className="w-[600px]">
@@ -56,10 +72,13 @@ function StepperExample() {
         <button
           onClick={nextStep}
           disabled={isLastStep}
-          className={
-          cn(
+          className={cn(
             "rounded px-4 py-2 text-white",
-            isBeforeLastStep ? "bg-orange-400" : isLastStep ? "bg-gray-300" : "bg-blue-500"
+            {
+              "bg-orange-400": isBeforeLastStep,
+              "bg-gray-300": isLastStep,
+              "bg-blue-500": !isBeforeLastStep && !isLastStep,
+            }
           )}
         >
           {isBeforeLastStep || isLastStep ? "Enviar" : "Continuar"}
