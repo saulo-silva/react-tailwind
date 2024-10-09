@@ -23,17 +23,25 @@ const Circle = ({ status, onClick }) => {
   };
 
   return (
-    <button type='button' onClick={onClick ? onClick : undefined}>
-      <div className={`relative inset-0 size-4 rounded-full ${getColor().border}`}>
-        <div className={`absolute inset-1 rounded-full ${getColor().bg}`} />
-      </div>
-    </button>
-  )
-}
+    <div
+      role="button"
+      tabIndex="0"
+      onClick={onClick ? onClick : undefined}
+      onKeyPress={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          onClick && onClick();
+        }
+      }}
+      className={`relative inset-0 size-4 cursor-pointer rounded-full ${getColor().border}`}
+    >
+      <div className={`absolute inset-1 rounded-full ${getColor().bg}`} />
+    </div>
+  );
+};
 
 Circle.propTypes = {
   status: PropTypes.oneOf(['current', 'completed', 'awaiting']),
   onClick: PropTypes.func,
 };
 
-export default Circle
+export default Circle;
