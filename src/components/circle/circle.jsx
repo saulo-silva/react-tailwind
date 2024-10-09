@@ -26,6 +26,7 @@ const Circle = ({ status, onClick }) => {
     <div
       role="button"
       tabIndex="0"
+      aria-label="Passos"
       onClick={onClick ? onClick : undefined}
       className={`relative inset-0 size-4 cursor-pointer rounded-full ${getColor().border}`}
     >
