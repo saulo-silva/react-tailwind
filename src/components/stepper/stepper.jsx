@@ -50,7 +50,7 @@ const Step = ({ label, description, step }) => {
 };
 
 const Completed = ({ children }) => {
-  return <div className="text-center font-bold text-green-500">{children}</div>;
+  return { children };
 };
 
 Stepper.displayName = 'Stepper';
