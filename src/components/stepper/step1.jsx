@@ -12,7 +12,9 @@ function Step1() {
         <h1 className="p-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
       </div>
 
-      <button type="button" className="rounded bg-blue-500 px-4 py-2 text-white" onClick={() => onStepClick(1)}>Não clica aqui</button>
+      <button type="button" className="rounded bg-blue-700 px-4 py-2 text-white" onClick={() => onStepClick(1)}>Não
+        Clica aqui
+      </button>
     </div>
   );
 }

@@ -27,11 +27,6 @@ const Circle = ({ status, onClick }) => {
       role="button"
       tabIndex="0"
       onClick={onClick ? onClick : undefined}
-      onKeyPress={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          onClick && onClick();
-        }
-      }}
       className={`relative inset-0 size-4 cursor-pointer rounded-full ${getColor().border}`}
     >
       <div className={`absolute inset-1 rounded-full ${getColor().bg}`} />
