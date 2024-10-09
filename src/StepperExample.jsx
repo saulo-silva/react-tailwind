@@ -75,7 +75,7 @@ export function StepperExample() {
           className={cn(
             "rounded px-4 py-2 text-white",
             {
-              "bg-orange-400": isBeforeLastStep,
+              "bg-orange-600": isBeforeLastStep,
               "bg-gray-600": isLastStep,
               "bg-blue-700": !isBeforeLastStep && !isLastStep,
             }
