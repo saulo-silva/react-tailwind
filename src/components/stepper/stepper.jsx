@@ -50,7 +50,7 @@ const Step = ({ label, description, step }) => {
 };
 
 const Completed = ({ children }) => {
-  return { children };
+  return children;
 };
 
 Stepper.displayName = 'Stepper';
