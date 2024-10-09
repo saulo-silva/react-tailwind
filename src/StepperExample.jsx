@@ -64,7 +64,7 @@ export function StepperExample() {
           className={
             cn(
               "rounded px-4 py-2 text-white",
-              isFirstStep ? "bg-gray-300" : "bg-blue-500"
+              isFirstStep ? "bg-gray-400" : "bg-blue-700"
             )}
         >
           Voltar
@@ -76,8 +76,8 @@ export function StepperExample() {
             "rounded px-4 py-2 text-white",
             {
               "bg-orange-400": isBeforeLastStep,
-              "bg-gray-300": isLastStep,
-              "bg-blue-500": !isBeforeLastStep && !isLastStep,
+              "bg-gray-400": isLastStep,
+              "bg-blue-700": !isBeforeLastStep && !isLastStep,
             }
           )}
         >
