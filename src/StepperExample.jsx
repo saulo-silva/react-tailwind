@@ -30,7 +30,7 @@ export function StepperExample() {
   const { active, setActive, nextStep, prevStep, isFirstStep, isLastStep, isBeforeLastStep } = useStepper(qtdSteps);
 
   return (
-    <div className="max-w-2xl p-2">
+    <div className="w-full max-w-2xl rounded-md border p-2">
       <Stepper active={active} onStepClick={setActive}>
         <Stepper.Step>
           <Step1 />
