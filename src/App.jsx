@@ -1,4 +1,5 @@
 import { StepperExample } from "./StepperExample.jsx";
+import { FocusPage } from "./FocusPage.jsx";
 
 export default function App() {
   return (
@@ -16,7 +17,8 @@ export default function App() {
       </header>
 
       <main role="main" className="flex w-full flex-1 flex-col items-center gap-4 bg-gray-50 p-4">
-        <StepperExample />
+        {/*<StepperExample />*/}
+        <FocusPage />
       </main>
 
       <footer className="hidden w-full bg-blue-700 p-4 text-white md:block">
