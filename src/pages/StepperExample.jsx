@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { cn } from "./utils";
+import { cn } from "../utils";
 
-import { Stepper } from './components/stepper';
-import Step1 from "./components/stepper/step1.jsx";
+import { Stepper } from '../components/stepper';
+import Step1 from "../components/stepper/step1.jsx";
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
