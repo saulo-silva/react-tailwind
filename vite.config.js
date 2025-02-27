@@ -9,7 +9,7 @@ export default defineConfig({
     eslint({
       failOnError: false,
       failOnWarning: false,
-      lintOnStart: true,
+      lintOnStart: false,
       fix: true,
     }),
   ],
