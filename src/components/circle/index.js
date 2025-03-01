@@ -1,1 +1,1 @@
-export { default as Circle } from "./Circle.jsx";
+export { default as Circle } from "./circle.jsx";
