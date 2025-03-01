@@ -1,4 +1,4 @@
-import { useStepper } from "./useStepper";
+import { useStepper } from "./use-stepper";
 
 function Step1() {
   const { onStepClick } = useStepper();

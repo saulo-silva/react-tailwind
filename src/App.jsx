@@ -1,9 +1,9 @@
 import { Routes, Route } from "react-router-dom";
-import { StepperExample } from "./pages/StepperExample.jsx";
-import { FocusPage } from "./pages/FocusPage.jsx";
-import ChurchForm from "./pages/ChurchForm.jsx";
-import Layout from "./layouts/Layout.jsx";
-import Home from "./pages/Home.jsx";
+import { StepperExample } from "./pages/stepper-example.jsx";
+import { FocusPage } from "./pages/focus-page.jsx";
+import ChurchForm from "./pages/church-form.jsx";
+import Layout from "./layouts/layout.jsx";
+import Home from "./pages/home.jsx";
 
 export default function App() {
   return (

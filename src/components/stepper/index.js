@@ -1,1 +1,1 @@
-export { default as Stepper } from './Stepper.jsx';
+export { default as Stepper } from './stepper.jsx';
