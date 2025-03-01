@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node vercel-prebuild.js",
     "build": "vite build",
     "db": "npx json-server db.json",
     "lint": "eslint .",
