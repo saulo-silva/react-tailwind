@@ -15,10 +15,11 @@ export default function Layout({ children }) {
             <circle cx="50" cy="50" r="50" fill="white" />
             <text x="50%" y="55%" textAnchor="middle" fill="purple" fontSize="24" fontWeight="bold" dy=".3em">MP</text>
           </svg>
-          
+
           <nav>
             <ul className="flex space-x-6">
               <li><Link to="/" className="transition-colors hover:text-purple-200">Home</Link></li>
+              <li><Link to="/products" className="transition-colors hover:text-purple-200">Products</Link></li>
               <li><Link to="/stepper" className="transition-colors hover:text-purple-200">Stepper</Link></li>
               <li><Link to="/focus" className="transition-colors hover:text-purple-200">Focus</Link></li>
               <li><Link to="/church" className="transition-colors hover:text-purple-200">Church Form</Link></li>
