@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import PropTypes from "prop-types";
 
 export default function Layout({ children }) {
@@ -30,7 +30,8 @@ export default function Layout({ children }) {
 
       <main role="main" className="flex-1 bg-gray-50 p-4">
         <div className="container mx-auto">
-          {children}
+          {/*{children}*/}
+          <Outlet />
         </div>
       </main>
 

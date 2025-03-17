@@ -17,7 +17,7 @@ export const Stepper = ({ children, active, onStepClick }) => {
             <React.Fragment key={index}>
               {cloneElement(step, { step: index })}
               {index < steps.length - 1 && (
-                <div className={`mx-2 my-auto h-px flex-1 ${index < active ? 'bg-blue-500' : 'bg-gray-300'}`} />
+                <div className={`mx-2 my-auto h-px flex-1 ${index < active ? 'bg-purple-500' : 'bg-gray-300'}`} />
               )}
             </React.Fragment>
           ))}

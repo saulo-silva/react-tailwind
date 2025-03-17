@@ -5,12 +5,12 @@ const Circle = ({ status, onClick }) => {
     switch (status) {
       case 'current':
         return {
-          bg: 'bg-blue-500',
-          border: 'border border-blue-500',
+          bg: 'bg-purple-500',
+          border: 'border border-purple-500',
         };
       case 'completed':
         return {
-          bg: 'bg-blue-500',
+          bg: 'bg-purple-500',
           border: '',
         };
       case 'awaiting':
