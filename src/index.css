@@ -1,3 +1,64 @@
+/* Fonts import for Inter and Montserrat */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased text-gray-900 dark:text-gray-100;
+  }
+
+  h1 {
+    @apply text-3xl font-bold text-gray-900 dark:text-white md:text-4xl;
+  }
+
+  h2 {
+    @apply text-2xl font-bold text-gray-900 dark:text-white md:text-3xl;
+  }
+
+  h3 {
+    @apply text-xl font-bold text-gray-900 dark:text-white md:text-2xl;
+  }
+
+  h4 {
+    @apply text-lg font-bold text-gray-900 dark:text-white;
+  }
+}
+
+@layer components {
+  .container {
+    @apply mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary-600 text-white hover:bg-secondary-700 focus:ring-secondary-500;
+  }
+
+  .card {
+    @apply overflow-hidden rounded-lg bg-white shadow dark:bg-gray-800;
+  }
+}
+
+@layer utilities {
+  .transition-fast {
+    @apply transition duration-150 ease-in-out;
+  }
+
+  .transition-medium {
+    @apply transition duration-300 ease-in-out;
+  }
+
+  .transition-slow {
+    @apply transition duration-500 ease-in-out;
+  }
+}
