@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { formatCEP } from '../../utils/formatters';
 
-const Endereco = ({ formData, handleChange, errors, prevStep, nextStep }) => {
+const Endereco = ({ formData, handleChange, errors }) => {
   const handleInputChange = (e, formatter = null) => {
     const { name, value } = e.target;
     const formattedValue = formatter ? formatter(value) : value;
@@ -19,7 +19,7 @@ const Endereco = ({ formData, handleChange, errors, prevStep, nextStep }) => {
             value={formData.cep}
             onChange={(e) => handleInputChange(e, formatCEP)}
             maxLength={9}
-            className={`mt-1 w-full rounded-md border ${errors.cep ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-purple-500 focus:outline-none focus:ring-purple-500`}
+            className={`mt-1 w-full rounded-md border ${errors.cep ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
             required
           />
           {errors.cep && <p className="mt-1 text-xs text-red-500">{errors.cep}</p>}
@@ -31,7 +31,7 @@ const Endereco = ({ formData, handleChange, errors, prevStep, nextStep }) => {
             name="endereco"
             value={formData.endereco}
             onChange={handleInputChange}
-            className={`mt-1 w-full rounded-md border ${errors.endereco ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-purple-500 focus:outline-none focus:ring-purple-500`}
+            className={`mt-1 w-full rounded-md border ${errors.endereco ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
             required
           />
           {errors.endereco && <p className="mt-1 text-xs text-red-500">{errors.endereco}</p>}
@@ -43,7 +43,7 @@ const Endereco = ({ formData, handleChange, errors, prevStep, nextStep }) => {
             name="numero"
             value={formData.numero}
             onChange={handleInputChange}
-            className={`mt-1 w-full rounded-md border ${errors.numero ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-purple-500 focus:outline-none focus:ring-purple-500`}
+            className={`mt-1 w-full rounded-md border ${errors.numero ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
             required
           />
           {errors.numero && <p className="mt-1 text-xs text-red-500">{errors.numero}</p>}
@@ -55,7 +55,7 @@ const Endereco = ({ formData, handleChange, errors, prevStep, nextStep }) => {
             name="complemento"
             value={formData.complemento}
             onChange={handleInputChange}
-            className="mt-1 w-full rounded-md border border-gray-300 p-2 focus:border-purple-500 focus:outline-none focus:ring-purple-500"
+            className="mt-1 w-full rounded-md border border-gray-300 p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500"
           />
         </div>
         <div>
@@ -65,7 +65,7 @@ const Endereco = ({ formData, handleChange, errors, prevStep, nextStep }) => {
             name="bairro"
             value={formData.bairro}
             onChange={handleInputChange}
-            className={`mt-1 w-full rounded-md border ${errors.bairro ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-purple-500 focus:outline-none focus:ring-purple-500`}
+            className={`mt-1 w-full rounded-md border ${errors.bairro ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
             required
           />
           {errors.bairro && <p className="mt-1 text-xs text-red-500">{errors.bairro}</p>}
@@ -77,7 +77,7 @@ const Endereco = ({ formData, handleChange, errors, prevStep, nextStep }) => {
             name="cidade"
             value={formData.cidade}
             onChange={handleInputChange}
-            className={`mt-1 w-full rounded-md border ${errors.cidade ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-purple-500 focus:outline-none focus:ring-purple-500`}
+            className={`mt-1 w-full rounded-md border ${errors.cidade ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
             required
           />
           {errors.cidade && <p className="mt-1 text-xs text-red-500">{errors.cidade}</p>}
@@ -88,7 +88,7 @@ const Endereco = ({ formData, handleChange, errors, prevStep, nextStep }) => {
             name="estado"
             value={formData.estado}
             onChange={handleInputChange}
-            className={`mt-1 w-full rounded-md border ${errors.estado ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-purple-500 focus:outline-none focus:ring-purple-500`}
+            className={`mt-1 w-full rounded-md border ${errors.estado ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
             required
           >
             <option value="">Selecione</option>
@@ -123,22 +123,6 @@ const Endereco = ({ formData, handleChange, errors, prevStep, nextStep }) => {
           {errors.estado && <p className="mt-1 text-xs text-red-500">{errors.estado}</p>}
         </div>
       </div>
-      
-      {/* Botões de navegação */}
-      <div className="mt-8 flex justify-between space-x-4">
-        <button
-          onClick={prevStep}
-          className="rounded-lg border border-purple-700 px-6 py-2 text-purple-700 transition hover:bg-purple-50"
-        >
-          Voltar
-        </button>
-        <button
-          onClick={nextStep}
-          className="rounded-lg bg-purple-700 px-6 py-2 text-white transition hover:bg-purple-800"
-        >
-          Próximo
-        </button>
-      </div>
     </div>
   );
 };
@@ -155,8 +139,6 @@ Endereco.propTypes = {
   }).isRequired,
   handleChange: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
-  prevStep: PropTypes.func.isRequired,
-  nextStep: PropTypes.func.isRequired,
 };
 
 export default Endereco; 

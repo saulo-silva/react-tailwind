@@ -1,22 +1,67 @@
 import PropTypes from 'prop-types';
 
-const Revisao = ({ formData, cart, subtotal, frete, total, prevStep, finalizarCompra }) => {
+const Revisao = ({ formData, cart, subtotal, frete, total, finalizarCompra }) => {
   return (
     <div className="space-y-6">
+      {/* Botão de finalização */}
+      <div className="mb-4">
+        <button
+          onClick={finalizarCompra}
+          className="w-full rounded-lg bg-primary-600 px-6 py-3 text-center text-white transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+        >
+          Finalizar Compra
+        </button>
+      </div>
+      
+      <div className="rounded-lg border border-gray-200 p-4">
+        <h3 className="mb-3 font-semibold">Produtos</h3>
+        <div className="max-h-60 overflow-y-auto rounded-md bg-white p-2">
+          {cart.map((item, index) => (
+            <div key={index} className="mb-2 flex justify-between border-b border-gray-100 pb-2 last:mb-0 last:border-0">
+              <div className="flex-1">
+                <p className="font-medium text-primary-700">{item.product.name}</p>
+                <div className="mt-1 flex justify-between text-xs text-gray-500">
+                  <span>Quantidade: {item.quantity}</span>
+                  <span className="mr-4">Unitário: R$ {item.product.price.toFixed(2).replace('.', ',')}</span>
+                </div>
+              </div>
+              <div className="text-right font-medium">
+                <p>R$ {(item.product.price * item.quantity).toFixed(2).replace('.', ',')}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        <div className="mt-4 space-y-2 rounded-md border border-gray-100 bg-gray-50 p-3">
+          <div className="flex justify-between text-sm">
+            <span className="font-medium">Subtotal:</span>
+            <span>R$ {subtotal.toFixed(2).replace('.', ',')}</span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span className="font-medium">Frete:</span>
+            <span>{frete === 0 ? <span className="font-medium text-green-600">Grátis</span> : `R$ ${frete.toFixed(2).replace('.', ',')}`}</span>
+          </div>
+          <div className="mt-2 flex justify-between border-t border-gray-200 pt-3 text-lg">
+            <span className="font-bold">Total:</span>
+            <span className="font-bold text-primary-700">R$ {total.toFixed(2).replace('.', ',')}</span>
+          </div>
+        </div>
+      </div>
+      
       <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
         <h3 className="mb-3 font-semibold">Dados Pessoais</h3>
         <div className="grid grid-cols-1 gap-2 text-sm md:grid-cols-2">
           <div>
-            <span className="font-medium">Nome:</span> {formData.nome}
+            <span className="font-medium">Nome:</span> {formData.nome || 'Não informado'}
           </div>
           <div>
-            <span className="font-medium">E-mail:</span> {formData.email}
+            <span className="font-medium">E-mail:</span> {formData.email || 'Não informado'}
           </div>
           <div>
-            <span className="font-medium">CPF:</span> {formData.cpf}
+            <span className="font-medium">CPF:</span> {formData.cpf || 'Não informado'}
           </div>
           <div>
-            <span className="font-medium">Telefone:</span> {formData.telefone}
+            <span className="font-medium">Telefone:</span> {formData.telefone || 'Não informado'}
           </div>
         </div>
       </div>
@@ -25,16 +70,16 @@ const Revisao = ({ formData, cart, subtotal, frete, total, prevStep, finalizarCo
         <h3 className="mb-3 font-semibold">Endereço de Entrega</h3>
         <div className="grid gap-2 text-sm">
           <div>
-            <span className="font-medium">Endereço:</span> {formData.endereco}, {formData.numero} {formData.complemento ? `- ${formData.complemento}` : ''}
+            <span className="font-medium">Endereço:</span> {formData.endereco ? `${formData.endereco}, ${formData.numero} ${formData.complemento ? `- ${formData.complemento}` : ''}` : 'Não informado'}
           </div>
           <div>
-            <span className="font-medium">Bairro:</span> {formData.bairro}
+            <span className="font-medium">Bairro:</span> {formData.bairro || 'Não informado'}
           </div>
           <div>
-            <span className="font-medium">Cidade/UF:</span> {formData.cidade}/{formData.estado}
+            <span className="font-medium">Cidade/UF:</span> {formData.cidade && formData.estado ? `${formData.cidade}/${formData.estado}` : 'Não informado'}
           </div>
           <div>
-            <span className="font-medium">CEP:</span> {formData.cep}
+            <span className="font-medium">CEP:</span> {formData.cep || 'Não informado'}
           </div>
         </div>
       </div>
@@ -45,13 +90,13 @@ const Revisao = ({ formData, cart, subtotal, frete, total, prevStep, finalizarCo
           {formData.metodoPagamento === 'cartao' && (
             <>
               <div>
-                <span className="font-medium">Cartão de Crédito:</span> •••• •••• •••• {formData.numeroCartao.substring(formData.numeroCartao.length - 4)}
+                <span className="font-medium">Cartão de Crédito:</span> {formData.numeroCartao ? `•••• •••• •••• ${formData.numeroCartao.substring(formData.numeroCartao.length - 4)}` : 'Não informado'}
               </div>
               <div>
-                <span className="font-medium">Nome no Cartão:</span> {formData.nomeCartao}
+                <span className="font-medium">Nome no Cartão:</span> {formData.nomeCartao || 'Não informado'}
               </div>
               <div>
-                <span className="font-medium">Parcelamento:</span> {formData.parcelas}x de R$ {(total / parseInt(formData.parcelas)).toFixed(2).replace('.', ',')}
+                <span className="font-medium">Parcelamento:</span> {formData.parcelas ? `${formData.parcelas}x de R$ ${(total / parseInt(formData.parcelas)).toFixed(2).replace('.', ',')}` : 'Não informado'}
               </div>
             </>
           )}
@@ -70,57 +115,16 @@ const Revisao = ({ formData, cart, subtotal, frete, total, prevStep, finalizarCo
         </div>
       </div>
       
-      <div className="rounded-lg border border-gray-200 p-4">
-        <h3 className="mb-3 font-semibold">Resumo do Pedido</h3>
-        <div className="max-h-40 overflow-y-auto">
-          {cart.map((item, index) => (
-            <div key={index} className="mb-2 flex justify-between border-b pb-2">
-              <div className="flex items-center">
-                <img src={item.product.image} alt={item.product.name} className="mr-2 size-10 rounded object-cover" />
-                <div>
-                  <p className="font-medium">{item.product.name}</p>
-                  <p className="text-xs text-gray-500">Quantidade: {item.quantity}</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p>R$ {(item.product.price * item.quantity).toFixed(2).replace('.', ',')}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-        
-        <div className="mt-4 space-y-2">
-          <div className="flex justify-between text-sm">
-            <span>Subtotal:</span>
-            <span>R$ {subtotal.toFixed(2).replace('.', ',')}</span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span>Frete:</span>
-            <span>{frete === 0 ? 'Grátis' : `R$ ${frete.toFixed(2).replace('.', ',')}`}</span>
-          </div>
-          <div className="flex justify-between border-t pt-2 text-lg font-bold">
-            <span>Total:</span>
-            <span>R$ {total.toFixed(2).replace('.', ',')}</span>
-          </div>
-        </div>
-      </div>
-      
       {/* Política de privacidade e termos */}
       <div className="mt-2 text-center text-sm text-gray-600">
-        <p>Ao finalizar o pedido, você concorda com nossa <a href="#" className="text-purple-700 hover:underline">Política de Privacidade</a> e <a href="#" className="text-purple-700 hover:underline">Termos de Uso</a>.</p>
+        <p>Ao finalizar o pedido, você concorda com nossa <a href="#" className="text-primary-600 hover:underline">Política de Privacidade</a> e <a href="#" className="text-primary-600 hover:underline">Termos de Uso</a>.</p>
       </div>
       
-      {/* Botões de navegação */}
-      <div className="mt-8 flex justify-between space-x-4">
-        <button
-          onClick={prevStep}
-          className="rounded-lg border border-purple-700 px-6 py-2 text-purple-700 transition hover:bg-purple-50"
-        >
-          Voltar
-        </button>
+      {/* Botão de finalização */}
+      <div className="mt-6">
         <button
           onClick={finalizarCompra}
-          className="rounded-lg bg-purple-700 px-6 py-2 text-white transition hover:bg-purple-800"
+          className="w-full rounded-lg bg-primary-600 px-6 py-3 text-center text-white transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
         >
           Finalizar Compra
         </button>
@@ -160,7 +164,6 @@ Revisao.propTypes = {
   subtotal: PropTypes.number.isRequired,
   frete: PropTypes.number.isRequired,
   total: PropTypes.number.isRequired,
-  prevStep: PropTypes.func.isRequired,
   finalizarCompra: PropTypes.func.isRequired,
 };
 

@@ -233,8 +233,8 @@ const ProductSelection = () => {
         </Card>
       </div>
       
-      {/* Botão de carrinho */}
-      <div className="mb-6 flex justify-end">
+      {/* Botões de carrinho */}
+      <div className="mb-6 flex justify-end gap-3">
         <Button
           variant="primary"
           onClick={() => setIsCartOpen(true)}
@@ -255,7 +255,14 @@ const ProductSelection = () => {
             <circle cx="20" cy="21" r="1"></circle>
             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
           </svg>
-          Carrinho ({totalItems})
+          Ver Carrinho ({totalItems})
+        </Button>
+        <Button
+          variant="outline"
+          onClick={() => navigate('/cart')}
+          className="flex items-center gap-2"
+        >
+          Página do Carrinho
         </Button>
       </div>
       

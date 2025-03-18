@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { formatCartao, formatValidade } from '../../utils/formatters';
 
-const Pagamento = ({ formData, handleChange, errors, prevStep, nextStep, total }) => {
+const Pagamento = ({ formData, handleChange, errors, total }) => {
   const handleInputChange = (e, formatter = null) => {
     const { name, value } = e.target;
     const formattedValue = formatter ? formatter(value) : value;
@@ -10,9 +10,9 @@ const Pagamento = ({ formData, handleChange, errors, prevStep, nextStep, total }
 
   return (
     <div className="space-y-6">
-      <div className="flex space-x-4">
+      <div className="flex flex-wrap gap-2">
         <div 
-          className={`flex cursor-pointer items-center rounded-lg border p-4 ${formData.metodoPagamento === 'cartao' ? 'border-purple-500 bg-purple-50' : 'border-gray-300'}`}
+          className={`flex cursor-pointer items-center rounded-lg border p-4 ${formData.metodoPagamento === 'cartao' ? 'border-primary-500 bg-primary-50' : 'border-gray-300'}`}
           onClick={() => handleChange({ target: { name: 'metodoPagamento', value: 'cartao' } })}
         >
           <input
@@ -29,7 +29,7 @@ const Pagamento = ({ formData, handleChange, errors, prevStep, nextStep, total }
         </div>
         
         <div 
-          className={`flex cursor-pointer items-center rounded-lg border p-4 ${formData.metodoPagamento === 'boleto' ? 'border-purple-500 bg-purple-50' : 'border-gray-300'}`}
+          className={`flex cursor-pointer items-center rounded-lg border p-4 ${formData.metodoPagamento === 'boleto' ? 'border-primary-500 bg-primary-50' : 'border-gray-300'}`}
           onClick={() => handleChange({ target: { name: 'metodoPagamento', value: 'boleto' } })}
         >
           <input
@@ -46,7 +46,7 @@ const Pagamento = ({ formData, handleChange, errors, prevStep, nextStep, total }
         </div>
         
         <div 
-          className={`flex cursor-pointer items-center rounded-lg border p-4 ${formData.metodoPagamento === 'pix' ? 'border-purple-500 bg-purple-50' : 'border-gray-300'}`}
+          className={`flex cursor-pointer items-center rounded-lg border p-4 ${formData.metodoPagamento === 'pix' ? 'border-primary-500 bg-primary-50' : 'border-gray-300'}`}
           onClick={() => handleChange({ target: { name: 'metodoPagamento', value: 'pix' } })}
         >
           <input
@@ -74,7 +74,7 @@ const Pagamento = ({ formData, handleChange, errors, prevStep, nextStep, total }
                 value={formData.numeroCartao}
                 onChange={(e) => handleInputChange(e, formatCartao)}
                 maxLength={19}
-                className={`mt-1 w-full rounded-md border ${errors.numeroCartao ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-purple-500 focus:outline-none focus:ring-purple-500`}
+                className={`mt-1 w-full rounded-md border ${errors.numeroCartao ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
                 placeholder="0000 0000 0000 0000"
                 required={formData.metodoPagamento === 'cartao'}
               />
@@ -87,7 +87,7 @@ const Pagamento = ({ formData, handleChange, errors, prevStep, nextStep, total }
                 name="nomeCartao"
                 value={formData.nomeCartao}
                 onChange={handleInputChange}
-                className={`mt-1 w-full rounded-md border ${errors.nomeCartao ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-purple-500 focus:outline-none focus:ring-purple-500`}
+                className={`mt-1 w-full rounded-md border ${errors.nomeCartao ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
                 required={formData.metodoPagamento === 'cartao'}
               />
               {errors.nomeCartao && <p className="mt-1 text-xs text-red-500">{errors.nomeCartao}</p>}
@@ -101,7 +101,7 @@ const Pagamento = ({ formData, handleChange, errors, prevStep, nextStep, total }
                 onChange={(e) => handleInputChange(e, formatValidade)}
                 maxLength={5}
                 placeholder="MM/AA"
-                className={`mt-1 w-full rounded-md border ${errors.validadeCartao ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-purple-500 focus:outline-none focus:ring-purple-500`}
+                className={`mt-1 w-full rounded-md border ${errors.validadeCartao ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
                 required={formData.metodoPagamento === 'cartao'}
               />
               {errors.validadeCartao && <p className="mt-1 text-xs text-red-500">{errors.validadeCartao}</p>}
@@ -117,7 +117,7 @@ const Pagamento = ({ formData, handleChange, errors, prevStep, nextStep, total }
                   handleChange({ target: { name: 'cvv', value } });
                 }}
                 maxLength={4}
-                className={`mt-1 w-full rounded-md border ${errors.cvv ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-purple-500 focus:outline-none focus:ring-purple-500`}
+                className={`mt-1 w-full rounded-md border ${errors.cvv ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
                 required={formData.metodoPagamento === 'cartao'}
               />
               {errors.cvv && <p className="mt-1 text-xs text-red-500">{errors.cvv}</p>}
@@ -128,7 +128,7 @@ const Pagamento = ({ formData, handleChange, errors, prevStep, nextStep, total }
                 name="parcelas"
                 value={formData.parcelas}
                 onChange={handleInputChange}
-                className="mt-1 w-full rounded-md border border-gray-300 p-2 focus:border-purple-500 focus:outline-none focus:ring-purple-500"
+                className="mt-1 w-full rounded-md border border-gray-300 p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500"
                 required={formData.metodoPagamento === 'cartao'}
               >
                 {[...Array(12)].map((_, i) => {
@@ -170,22 +170,6 @@ const Pagamento = ({ formData, handleChange, errors, prevStep, nextStep, total }
           </p>
         </div>
       )}
-      
-      {/* Botões de navegação */}
-      <div className="mt-8 flex justify-between space-x-4">
-        <button
-          onClick={prevStep}
-          className="rounded-lg border border-purple-700 px-6 py-2 text-purple-700 transition hover:bg-purple-50"
-        >
-          Voltar
-        </button>
-        <button
-          onClick={nextStep}
-          className="rounded-lg bg-purple-700 px-6 py-2 text-white transition hover:bg-purple-800"
-        >
-          Próximo
-        </button>
-      </div>
     </div>
   );
 };
@@ -201,8 +185,6 @@ Pagamento.propTypes = {
   }).isRequired,
   handleChange: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
-  prevStep: PropTypes.func.isRequired,
-  nextStep: PropTypes.func.isRequired,
   total: PropTypes.number.isRequired,
 };
 

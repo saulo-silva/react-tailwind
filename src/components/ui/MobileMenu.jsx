@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -32,6 +32,46 @@ const CloseIcon = ({ className = '' }) => (
 
 const MobileMenu = ({ links }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [cartItemCount, setCartItemCount] = useState(0);
+
+  // Atualizar contador de itens do carrinho
+  useEffect(() => {
+    const updateCartCount = () => {
+      try {
+        const savedCart = localStorage.getItem('cart');
+        if (savedCart) {
+          const parsedCart = JSON.parse(savedCart);
+          if (Array.isArray(parsedCart)) {
+            const count = parsedCart.reduce((total, item) => total + item.quantity, 0);
+            setCartItemCount(count);
+          }
+        } else {
+          setCartItemCount(0);
+        }
+      } catch (e) {
+        console.error("Erro ao buscar carrinho:", e);
+        setCartItemCount(0);
+      }
+    };
+
+    // Atualizar contagem inicial
+    updateCartCount();
+
+    // Monitorar mudanças no localStorage
+    const handleStorageChange = () => {
+      updateCartCount();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    // Verificar a cada segundo para mudanças no mesmo navegador
+    const interval = setInterval(updateCartCount, 1000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, []);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -77,10 +117,15 @@ const MobileMenu = ({ links }) => {
                   <li key={index}>
                     <Link
                       to={link.to}
-                      className="block py-2 text-white transition-colors hover:text-primary-200"
+                      className="flex items-center gap-2 py-2 text-white transition-colors hover:text-primary-200"
                       onClick={closeMenu}
                     >
                       {link.label}
+                      {link.to === "/cart" && cartItemCount > 0 && (
+                        <span className="inline-flex size-5 items-center justify-center rounded-full bg-secondary-500 text-xs font-bold">
+                          {cartItemCount}
+                        </span>
+                      )}
                     </Link>
                   </li>
                 ))}

@@ -35,10 +35,10 @@ export default function Home() {
         </p>
         <div className="flex flex-wrap justify-center gap-4">
           <Link to="/products">
-            <Button variant="primary" size="lg">Browse Products</Button>
+            <Button variant="primary" size="lg">Produtos</Button>
           </Link>
-          <Link to="/stepper">
-            <Button variant="secondary" size="lg">Try Stepper</Button>
+          <Link to="/cart">
+            <Button variant="secondary" size="lg">Ver Carrinho</Button>
           </Link>
         </div>
       </div>
@@ -67,11 +67,11 @@ export default function Home() {
             Explore the different sections of the application to see all features in action.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/checkout">
-              <Button variant="primary" size="lg">Checkout Demo</Button>
+            <Link to="/cart">
+              <Button variant="primary" size="lg">Ir para o Carrinho</Button>
             </Link>
-            <Link to="/focus">
-              <Button variant="outline" size="lg">Focus Example</Button>
+            <Link to="/products">
+              <Button variant="outline" size="lg">Ver Catálogo</Button>
             </Link>
           </div>
         </div>

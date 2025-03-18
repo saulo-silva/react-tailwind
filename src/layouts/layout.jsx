@@ -1,15 +1,56 @@
 import { Link, Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import ThemeToggle from "../components/ui/ThemeToggle";
 import MobileMenu from "../components/ui/MobileMenu";
 
 export default function Layout({ children }) {
+  const [cartItemCount, setCartItemCount] = useState(0);
+
+  // Atualizar contador de itens do carrinho
+  useEffect(() => {
+    const updateCartCount = () => {
+      try {
+        const savedCart = localStorage.getItem('cart');
+        if (savedCart) {
+          const parsedCart = JSON.parse(savedCart);
+          if (Array.isArray(parsedCart)) {
+            const count = parsedCart.reduce((total, item) => total + item.quantity, 0);
+            setCartItemCount(count);
+          }
+        } else {
+          setCartItemCount(0);
+        }
+      } catch (e) {
+        console.error("Erro ao buscar carrinho:", e);
+        setCartItemCount(0);
+      }
+    };
+
+    // Atualizar contagem inicial
+    updateCartCount();
+
+    // Monitorar mudanças no localStorage
+    const handleStorageChange = () => {
+      updateCartCount();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Verificar a cada segundo (fallback para mudanças no mesmo navegador)
+    const interval = setInterval(updateCartCount, 1000);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
+    };
+  }, []);
+
   const navLinks = [
     { to: "/", label: "Home" },
-    { to: "/products", label: "Products" },
-    { to: "/stepper", label: "Stepper" },
-    { to: "/focus", label: "Focus" },
-    { to: "/contact", label: "Contact" },
+    { to: "/products", label: "Produtos" },
+    { to: "/cart", label: "Carrinho" },
+    { to: "/contact", label: "Contato" },
     { to: "/church", label: "Church Form" },
   ];
 
@@ -32,10 +73,18 @@ export default function Layout({ children }) {
 
           <nav className="hidden md:block">
             <ul className="flex space-x-6">
-              {navLinks.map((link, index) => (
+              {navLinks.slice(0, -2).map((link, index) => (
                 <li key={index}>
-                  <Link to={link.to} className="transition-colors hover:text-primary-200">
+                  <Link 
+                    to={link.to} 
+                    className="transition-colors hover:text-primary-200"
+                  >
                     {link.label}
+                    {link.to === "/cart" && cartItemCount > 0 && (
+                      <span className="ml-1 inline-flex size-5 items-center justify-center rounded-full bg-secondary-500 text-xs font-bold">
+                        {cartItemCount}
+                      </span>
+                    )}
                   </Link>
                 </li>
               ))}
@@ -43,6 +92,32 @@ export default function Layout({ children }) {
           </nav>
           
           <div className="flex items-center gap-4">
+            <Link 
+              to="/cart" 
+              className="relative mr-2 flex size-10 items-center justify-center rounded-full hover:bg-primary-700 md:hidden"
+              aria-label="Carrinho"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="20" cy="21" r="1"></circle>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+              </svg>
+              {cartItemCount > 0 && (
+                <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-secondary-500 text-xs font-bold">
+                  {cartItemCount}
+                </span>
+              )}
+            </Link>
             <ThemeToggle />
             <MobileMenu links={navLinks} />
           </div>
