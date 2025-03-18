@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import ThemeToggle from "../components/ui/ThemeToggle";
 import MobileMenu from "../components/ui/MobileMenu";
 
-export default function Layout({ children }) {
+export default function Layout() {
   const [cartItemCount, setCartItemCount] = useState(0);
 
   // Atualizar contador de itens do carrinho
@@ -36,7 +36,7 @@ export default function Layout({ children }) {
     };
 
     window.addEventListener('storage', handleStorageChange);
-    
+
     // Verificar a cada segundo (fallback para mudanças no mesmo navegador)
     const interval = setInterval(updateCartCount, 1000);
 
@@ -75,8 +75,8 @@ export default function Layout({ children }) {
             <ul className="flex space-x-6">
               {navLinks.slice(0, -2).map((link, index) => (
                 <li key={index}>
-                  <Link 
-                    to={link.to} 
+                  <Link
+                    to={link.to}
                     className="transition-colors hover:text-primary-200"
                   >
                     {link.label}
@@ -90,10 +90,10 @@ export default function Layout({ children }) {
               ))}
             </ul>
           </nav>
-          
+
           <div className="flex items-center gap-4">
-            <Link 
-              to="/cart" 
+            <Link
+              to="/cart"
               className="relative mr-2 flex size-10 items-center justify-center rounded-full hover:bg-primary-700 md:hidden"
               aria-label="Carrinho"
             >

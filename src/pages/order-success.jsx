@@ -5,12 +5,12 @@ const OrderSuccess = () => {
   const navigate = useNavigate();
   const [orderNumber, setOrderNumber] = useState('');
   const [orderDetails, setOrderDetails] = useState(null);
-  
+
   useEffect(() => {
     // Gerar um número de pedido aleatório para demonstração
     const randomOrderNumber = Math.floor(100000000 + Math.random() * 900000000).toString();
     setOrderNumber(randomOrderNumber);
-    
+
     // Tentar recuperar detalhes do pedido do sessionStorage (seria colocado lá pelo checkout)
     const savedOrderDetails = sessionStorage.getItem('orderDetails');
     if (savedOrderDetails) {
@@ -20,16 +20,16 @@ const OrderSuccess = () => {
         console.error("Erro ao recuperar detalhes do pedido:", e);
       }
     }
-    
+
     // Limpar carrinho
     localStorage.removeItem('cart');
-    
+
     // Limpar detalhes do pedido após exibir
     return () => {
       sessionStorage.removeItem('orderDetails');
     };
   }, []);
-  
+
   // Obter data estimada de entrega (7 dias úteis a partir de hoje)
   const getEstimatedDeliveryDate = () => {
     const date = new Date();
@@ -61,7 +61,7 @@ const OrderSuccess = () => {
           <h1 className="mb-2 text-3xl font-bold text-green-600">Pedido Realizado com Sucesso!</h1>
           <p className="text-lg text-gray-600">Obrigado por comprar conosco.</p>
         </div>
-        
+
         <div className="mb-6 rounded-lg bg-gray-50 p-4">
           <div className="mb-2 flex justify-between">
             <span className="font-medium text-gray-600">Número do Pedido:</span>
@@ -76,7 +76,7 @@ const OrderSuccess = () => {
             <span>{getEstimatedDeliveryDate()}</span>
           </div>
         </div>
-        
+
         {orderDetails && orderDetails.paymentMethod === 'pix' && (
           <div className="mb-6 rounded-lg border border-gray-200 bg-white p-4 text-center">
             <h3 className="mb-3 font-medium text-gray-700">QR Code do PIX</h3>
@@ -92,7 +92,7 @@ const OrderSuccess = () => {
             <p className="text-xs text-red-600">O pagamento deve ser realizado em até 30 minutos</p>
           </div>
         )}
-        
+
         {orderDetails && orderDetails.paymentMethod === 'boleto' && (
           <div className="mb-6 rounded-lg border border-gray-200 bg-white p-4 text-center">
             <h3 className="mb-3 font-medium text-gray-700">Boleto Bancário</h3>
@@ -105,16 +105,16 @@ const OrderSuccess = () => {
             <p className="text-xs text-red-600">O boleto vence em 1 dia útil</p>
           </div>
         )}
-        
+
         <div className="mb-8 border-t border-gray-200 pt-6">
           <h2 className="mb-4 text-xl font-bold">Instruções:</h2>
           <ul className="list-inside list-disc space-y-2 text-gray-600">
             <li>Um e-mail com os detalhes do seu pedido foi enviado para você.</li>
-            <li>Você pode acompanhar o status do seu pedido na área "Meus Pedidos".</li>
+            <li>Você pode acompanhar o status do seu pedido na área &#34;Meus Pedidos&#34;.</li>
             <li>Em caso de dúvidas, entre em contato com nosso suporte.</li>
           </ul>
         </div>
-        
+
         <div className="flex flex-col space-y-3 sm:flex-row sm:space-x-3 sm:space-y-0">
           <button
             onClick={() => navigate('/products')}

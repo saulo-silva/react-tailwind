@@ -1,4 +1,4 @@
-const Divisor = () => <div className="border-t border-black" />
+// const Divisor = () => <div className="border-t border-black" />
 const ChurchForm = () => {
   return (
     <div className="flex-1 p-1">

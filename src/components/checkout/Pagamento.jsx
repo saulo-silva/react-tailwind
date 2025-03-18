@@ -10,59 +10,20 @@ const Pagamento = ({ formData, handleChange, errors, total }) => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap gap-2">
-        <div 
-          className={`flex cursor-pointer items-center rounded-lg border p-4 ${formData.metodoPagamento === 'cartao' ? 'border-primary-500 bg-primary-50' : 'border-gray-300'}`}
-          onClick={() => handleChange({ target: { name: 'metodoPagamento', value: 'cartao' } })}
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Método de Pagamento</label>
+        <select
+          name="metodoPagamento"
+          value={formData.metodoPagamento}
+          onChange={handleInputChange}
+          className="mt-1 w-full rounded-md border border-gray-300 p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500"
         >
-          <input
-            type="radio"
-            name="metodoPagamento"
-            value="cartao"
-            checked={formData.metodoPagamento === 'cartao'}
-            onChange={handleInputChange}
-            className="mr-2"
-          />
-          <div>
-            <span className="font-medium">Cartão de Crédito</span>
-          </div>
-        </div>
-        
-        <div 
-          className={`flex cursor-pointer items-center rounded-lg border p-4 ${formData.metodoPagamento === 'boleto' ? 'border-primary-500 bg-primary-50' : 'border-gray-300'}`}
-          onClick={() => handleChange({ target: { name: 'metodoPagamento', value: 'boleto' } })}
-        >
-          <input
-            type="radio"
-            name="metodoPagamento"
-            value="boleto"
-            checked={formData.metodoPagamento === 'boleto'}
-            onChange={handleInputChange}
-            className="mr-2"
-          />
-          <div>
-            <span className="font-medium">Boleto Bancário</span>
-          </div>
-        </div>
-        
-        <div 
-          className={`flex cursor-pointer items-center rounded-lg border p-4 ${formData.metodoPagamento === 'pix' ? 'border-primary-500 bg-primary-50' : 'border-gray-300'}`}
-          onClick={() => handleChange({ target: { name: 'metodoPagamento', value: 'pix' } })}
-        >
-          <input
-            type="radio"
-            name="metodoPagamento"
-            value="pix"
-            checked={formData.metodoPagamento === 'pix'}
-            onChange={handleInputChange}
-            className="mr-2"
-          />
-          <div>
-            <span className="font-medium">PIX</span>
-          </div>
-        </div>
+          <option value="cartao">Cartão de Crédito</option>
+          <option value="boleto">Boleto Bancário</option>
+          <option value="pix">PIX</option>
+        </select>
       </div>
-      
+
       {formData.metodoPagamento === 'cartao' && (
         <div className="mt-4 space-y-4">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -122,7 +83,7 @@ const Pagamento = ({ formData, handleChange, errors, total }) => {
               />
               {errors.cvv && <p className="mt-1 text-xs text-red-500">{errors.cvv}</p>}
             </div>
-            <div>
+            <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700">Parcelamento</label>
               <select
                 name="parcelas"
@@ -146,11 +107,11 @@ const Pagamento = ({ formData, handleChange, errors, total }) => {
           </div>
         </div>
       )}
-      
+
       {formData.metodoPagamento === 'boleto' && (
         <div className="mt-4 space-y-4 rounded-lg border border-gray-300 bg-gray-50 p-4">
           <p className="text-gray-700">
-            O boleto será gerado após a confirmação do pedido e enviado para o seu e-mail. 
+            O boleto será gerado após a confirmação do pedido e enviado para o seu e-mail.
             O prazo de validade é de 1 dia útil.
           </p>
           <p className="font-semibold text-gray-700">
@@ -158,7 +119,7 @@ const Pagamento = ({ formData, handleChange, errors, total }) => {
           </p>
         </div>
       )}
-      
+
       {formData.metodoPagamento === 'pix' && (
         <div className="mt-4 space-y-4 rounded-lg border border-gray-300 bg-gray-50 p-4">
           <p className="text-gray-700">
@@ -188,4 +149,4 @@ Pagamento.propTypes = {
   total: PropTypes.number.isRequired,
 };
 
-export default Pagamento; 
+export default Pagamento;

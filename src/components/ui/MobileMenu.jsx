@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+// eslint-disable-next-line react/prop-types
 const MenuIcon = ({ className = '' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -16,6 +17,7 @@ const MenuIcon = ({ className = '' }) => (
   </svg>
 );
 
+// eslint-disable-next-line react/prop-types
 const CloseIcon = ({ className = '' }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
