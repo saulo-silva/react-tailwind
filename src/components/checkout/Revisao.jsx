@@ -1,12 +1,16 @@
 import PropTypes from 'prop-types';
+import { useFormContext } from 'react-hook-form';
 
-const Revisao = ({ formData, cart, subtotal, frete, total, finalizarCompra }) => {
+const Revisao = ({ cart, subtotal, frete, total }) => {
+  const { watch } = useFormContext();
+  const formData = watch();
+
   return (
     <div className="space-y-6">
       {/* Botão de finalização */}
       <div className="mb-4">
         <button
-          onClick={finalizarCompra}
+          type="submit"
           className="w-full rounded-lg bg-primary-600 px-6 py-3 text-center text-white transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
         >
           Finalizar Compra
@@ -123,7 +127,7 @@ const Revisao = ({ formData, cart, subtotal, frete, total, finalizarCompra }) =>
       {/* Botão de finalização */}
       <div className="mt-6">
         <button
-          onClick={finalizarCompra}
+          type="submit"
           className="w-full rounded-lg bg-primary-600 px-6 py-3 text-center text-white transition hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
         >
           Finalizar Compra
@@ -134,29 +138,11 @@ const Revisao = ({ formData, cart, subtotal, frete, total, finalizarCompra }) =>
 };
 
 Revisao.propTypes = {
-  formData: PropTypes.shape({
-    nome: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-    cpf: PropTypes.string.isRequired,
-    telefone: PropTypes.string.isRequired,
-    endereco: PropTypes.string.isRequired,
-    numero: PropTypes.string.isRequired,
-    complemento: PropTypes.string,
-    bairro: PropTypes.string.isRequired,
-    cidade: PropTypes.string.isRequired,
-    estado: PropTypes.string.isRequired,
-    cep: PropTypes.string.isRequired,
-    metodoPagamento: PropTypes.string.isRequired,
-    numeroCartao: PropTypes.string.isRequired,
-    nomeCartao: PropTypes.string.isRequired,
-    parcelas: PropTypes.string.isRequired,
-  }).isRequired,
   cart: PropTypes.arrayOf(
     PropTypes.shape({
       product: PropTypes.shape({
         name: PropTypes.string.isRequired,
         price: PropTypes.number.isRequired,
-        image: PropTypes.string.isRequired,
       }).isRequired,
       quantity: PropTypes.number.isRequired,
     })
@@ -164,7 +150,6 @@ Revisao.propTypes = {
   subtotal: PropTypes.number.isRequired,
   frete: PropTypes.number.isRequired,
   total: PropTypes.number.isRequired,
-  finalizarCompra: PropTypes.func.isRequired,
 };
 
 export default Revisao; 

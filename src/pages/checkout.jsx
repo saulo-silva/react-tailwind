@@ -1,39 +1,48 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useForm, FormProvider } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import DadosPessoais from '../components/checkout/DadosPessoais';
 import Endereco from '../components/checkout/Endereco';
 import Pagamento from '../components/checkout/Pagamento';
 import Revisao from '../components/checkout/Revisao';
+import { checkoutSchema } from '../schemas/checkout';
 
 const Checkout = () => {
   const navigate = useNavigate();
   const [cart, setCart] = useState([]);
-  const [errors, setErrors] = useState({});
   const [orderSuccess, setOrderSuccess] = useState(false);
-  const [formData, setFormData] = useState({
-    nome: '',
-    email: '',
-    cpf: '',
-    telefone: '',
 
-    cep: '',
-    endereco: '',
-    numero: '',
-    complemento: '',
-    bairro: '',
-    cidade: '',
-    estado: '',
-
-    metodoPagamento: 'cartao',
-    numeroCartao: '',
-    nomeCartao: '',
-    validadeCartao: '',
-    cvv: '',
-    parcelas: '1',
-
-    cpfBoleto: '',
+  const methods = useForm({
+    resolver: zodResolver(checkoutSchema),
+    defaultValues: {
+      nome: '',
+      email: '',
+      cpf: '',
+      telefone: '',
+      cep: '',
+      endereco: '',
+      numero: '',
+      complemento: '',
+      bairro: '',
+      cidade: '',
+      estado: '',
+      metodoPagamento: 'cartao',
+      numeroCartao: '',
+      nomeCartao: '',
+      validadeCartao: '',
+      cvv: '',
+      parcelas: '1',
+      cpfBoleto: '',
+    },
+    mode: 'all',
+    criteriaMode: 'all',
+    reValidateMode: 'onChange',
   });
 
+  const { handleSubmit, setValue, formState: { errors } } = methods;
+
+  console.log({ errors })
   useEffect(() => {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
@@ -53,152 +62,39 @@ const Checkout = () => {
     }
   }, [navigate]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: undefined }));
-    }
-
-    if (name === 'cep' && value.replace(/\D/g, '').length === 8) {
-      buscarCEP(value.replace(/\D/g, ''));
-    }
-  };
-
   const buscarCEP = async (cep) => {
     try {
       const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
       const data = await response.json();
 
       if (!data.erro) {
-        setFormData(prev => ({
-          ...prev,
-          endereco: data.logradouro,
-          bairro: data.bairro,
-          cidade: data.localidade,
-          estado: data.uf
-        }));
+        setValue('endereco', data.logradouro);
+        setValue('bairro', data.bairro);
+        setValue('cidade', data.localidade);
+        setValue('estado', data.uf);
       }
     } catch (error) {
       console.error("Erro ao buscar CEP:", error);
     }
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-    let isValid = true;
-
-    if (!formData.nome) {
-      newErrors.nome = 'Nome é obrigatório';
-      isValid = false;
-    }
-    if (!formData.email) {
-      newErrors.email = 'E-mail é obrigatório';
-      isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'E-mail inválido';
-      isValid = false;
-    }
-    if (!formData.cpf) {
-      newErrors.cpf = 'CPF é obrigatório';
-      isValid = false;
-    } else if (formData.cpf.replace(/\D/g, '').length !== 11) {
-      newErrors.cpf = 'CPF inválido';
-      isValid = false;
-    }
-    if (!formData.telefone) {
-      newErrors.telefone = 'Telefone é obrigatório';
-      isValid = false;
-    } else if (formData.telefone.replace(/\D/g, '').length < 10) {
-      newErrors.telefone = 'Telefone inválido';
-      isValid = false;
-    }
-
-    if (!formData.cep) {
-      newErrors.cep = 'CEP é obrigatório';
-      isValid = false;
-    } else if (formData.cep.replace(/\D/g, '').length !== 8) {
-      newErrors.cep = 'CEP inválido';
-      isValid = false;
-    }
-    if (!formData.endereco) {
-      newErrors.endereco = 'Endereço é obrigatório';
-      isValid = false;
-    }
-    if (!formData.numero) {
-      newErrors.numero = 'Número é obrigatório';
-      isValid = false;
-    }
-    if (!formData.bairro) {
-      newErrors.bairro = 'Bairro é obrigatório';
-      isValid = false;
-    }
-    if (!formData.cidade) {
-      newErrors.cidade = 'Cidade é obrigatória';
-      isValid = false;
-    }
-    if (!formData.estado) {
-      newErrors.estado = 'Estado é obrigatório';
-      isValid = false;
-    }
-
-    if (formData.metodoPagamento === 'cartao') {
-      if (!formData.numeroCartao) {
-        newErrors.numeroCartao = 'Número do cartão é obrigatório';
-        isValid = false;
-      } else if (formData.numeroCartao.replace(/\D/g, '').length < 16) {
-        newErrors.numeroCartao = 'Número do cartão inválido';
-        isValid = false;
-      }
-      if (!formData.nomeCartao) {
-        newErrors.nomeCartao = 'Nome no cartão é obrigatório';
-        isValid = false;
-      }
-      if (!formData.validadeCartao) {
-        newErrors.validadeCartao = 'Validade é obrigatória';
-        isValid = false;
-      } else if (formData.validadeCartao.replace(/\D/g, '').length !== 4) {
-        newErrors.validadeCartao = 'Validade inválida';
-        isValid = false;
-      }
-      if (!formData.cvv) {
-        newErrors.cvv = 'CVV é obrigatório';
-        isValid = false;
-      } else if (formData.cvv.length < 3) {
-        newErrors.cvv = 'CVV inválido';
-        isValid = false;
-      }
-    }
-
-    setErrors(newErrors);
-    return isValid;
-  };
-
-  const subtotal = cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
-  const frete = subtotal > 200 ? 0 : 15.90;
-  const total = subtotal + frete;
-
-  const finalizarCompra = () => {
-    if (!validateForm()) {
-      const firstErrorEl = document.querySelector('.border-red-500');
-      if (firstErrorEl) {
-        firstErrorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-      return;
-    }
-
+  const onSubmit = (data) => {
     const orderDetails = {
-      paymentMethod: formData.metodoPagamento,
+      paymentMethod: data.metodoPagamento,
       date: new Date().toISOString(),
       total: total,
-      items: cart
+      items: cart,
+      ...data,
     };
 
     sessionStorage.setItem('orderDetails', JSON.stringify(orderDetails));
     setOrderSuccess(true);
     localStorage.removeItem('cart');
   };
+
+  const subtotal = cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+  const frete = subtotal > 200 ? 0 : 15.90;
+  const total = subtotal + frete;
 
   if (orderSuccess) {
     return (
@@ -221,62 +117,43 @@ const Checkout = () => {
   }
 
   return (
-    <div className="container mx-auto max-w-5xl px-4 py-8">
-      <h1 className="mb-8 text-center text-2xl font-bold text-primary-600 dark:text-primary-400">Finalizar Pedido</h1>
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmit)} className="container mx-auto max-w-5xl px-4 py-8">
+        <h1 className="mb-8 text-center text-2xl font-bold text-primary-600 dark:text-primary-400">Finalizar Pedido</h1>
 
-      <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="space-y-6">
-          <div className="rounded-lg bg-white p-6 shadow-md">
-            <h2 className="mb-4 text-xl font-semibold text-primary-600 dark:text-primary-400">Dados Pessoais</h2>
-            <DadosPessoais
-              formData={formData}
-              handleChange={handleChange}
-              errors={errors}
-              nextStep={() => {}}
-            />
+        <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="space-y-6">
+            <div className="rounded-lg bg-white p-6 shadow-md">
+              <h2 className="mb-4 text-xl font-semibold text-primary-600 dark:text-primary-400">Dados Pessoais</h2>
+              <DadosPessoais buscarCEP={buscarCEP} />
+            </div>
+
+            <div className="rounded-lg bg-white p-6 shadow-md">
+              <h2 className="mb-4 text-xl font-semibold text-primary-600 dark:text-primary-400">Endereço de Entrega</h2>
+              <Endereco />
+            </div>
+
+            <div className="rounded-lg bg-white p-6 shadow-md">
+              <h2 className="mb-4 text-xl font-semibold text-primary-600 dark:text-primary-400">Forma de Pagamento</h2>
+              <Pagamento total={total} />
+            </div>
           </div>
 
-          <div className="rounded-lg bg-white p-6 shadow-md">
-            <h2 className="mb-4 text-xl font-semibold text-primary-600 dark:text-primary-400">Endereço de Entrega</h2>
-            <Endereco
-              formData={formData}
-              handleChange={handleChange}
-              errors={errors}
-              prevStep={() => {}}
-              nextStep={() => {}}
-            />
-          </div>
-
-          <div className="rounded-lg bg-white p-6 shadow-md">
-            <h2 className="mb-4 text-xl font-semibold text-primary-600 dark:text-primary-400">Forma de Pagamento</h2>
-            <Pagamento
-              formData={formData}
-              handleChange={handleChange}
-              errors={errors}
-              prevStep={() => {}}
-              nextStep={() => {}}
-              total={total}
-            />
+          <div>
+            <div className="sticky top-4 rounded-lg bg-white p-6 shadow-md">
+              <h2 className="mb-4 text-xl font-semibold text-primary-600 dark:text-primary-400">Resumo do Pedido</h2>
+              <Revisao
+                cart={cart}
+                subtotal={subtotal}
+                frete={frete}
+                total={total}
+              />
+            </div>
           </div>
         </div>
-
-        <div>
-          <div className="sticky top-4 rounded-lg bg-white p-6 shadow-md">
-            <h2 className="mb-4 text-xl font-semibold text-primary-600 dark:text-primary-400">Resumo do Pedido</h2>
-            <Revisao
-              formData={formData}
-              cart={cart}
-              subtotal={subtotal}
-              frete={frete}
-              total={total}
-              prevStep={() => {}}
-              finalizarCompra={finalizarCompra}
-            />
-          </div>
-        </div>
-      </div>
-    </div>
+      </form>
+    </FormProvider>
   );
 };
 
-export default Checkout
+export default Checkout;

@@ -1,11 +1,33 @@
 import PropTypes from 'prop-types';
+import { useFormContext } from 'react-hook-form';
 import { formatCartao, formatValidade } from '../../utils/formatters';
 
-const Pagamento = ({ formData, handleChange, errors, total }) => {
-  const handleInputChange = (e, formatter = null) => {
-    const { name, value } = e.target;
-    const formattedValue = formatter ? formatter(value) : value;
-    handleChange({ target: { name, value: formattedValue } });
+const Pagamento = ({ total }) => {
+  const {
+    register,
+    formState: { errors, touchedFields },
+    setValue,
+    watch,
+    trigger
+  } = useFormContext();
+  const metodoPagamento = watch('metodoPagamento');
+
+  const handleCartaoChange = async (e) => {
+    const formatted = formatCartao(e.target.value);
+    setValue('numeroCartao', formatted, { shouldValidate: true });
+    await trigger('numeroCartao');
+  };
+
+  const handleValidadeChange = async (e) => {
+    const formatted = formatValidade(e.target.value);
+    setValue('validadeCartao', formatted, { shouldValidate: true });
+    await trigger('validadeCartao');
+  };
+
+  const handleCVVChange = async (e) => {
+    const value = e.target.value.replace(/\D/g, '');
+    setValue('cvv', value, { shouldValidate: true });
+    await trigger('cvv');
   };
 
   return (
@@ -13,84 +35,74 @@ const Pagamento = ({ formData, handleChange, errors, total }) => {
       <div>
         <label className="block text-sm font-medium text-gray-700">Método de Pagamento</label>
         <select
-          name="metodoPagamento"
-          value={formData.metodoPagamento}
-          onChange={handleInputChange}
-          className="mt-1 w-full rounded-md border border-gray-300 p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500"
+          {...register('metodoPagamento', {
+            onChange: () => trigger('metodoPagamento')
+          })}
+          className={`mt-1 w-full rounded-md border ${errors.metodoPagamento ? 'border-red-500' : touchedFields.metodoPagamento ? 'border-green-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
         >
           <option value="cartao">Cartão de Crédito</option>
           <option value="boleto">Boleto Bancário</option>
           <option value="pix">PIX</option>
         </select>
+        {errors.metodoPagamento && <p className="mt-1 text-xs text-red-500">{errors.metodoPagamento.message}</p>}
       </div>
 
-      {formData.metodoPagamento === 'cartao' && (
+      {metodoPagamento === 'cartao' && (
         <div className="mt-4 space-y-4">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700">Número do Cartão</label>
               <input
                 type="text"
-                name="numeroCartao"
-                value={formData.numeroCartao}
-                onChange={(e) => handleInputChange(e, formatCartao)}
+                {...register('numeroCartao')}
+                onChange={handleCartaoChange}
                 maxLength={19}
-                className={`mt-1 w-full rounded-md border ${errors.numeroCartao ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
+                className={`mt-1 w-full rounded-md border ${errors.numeroCartao ? 'border-red-500' : touchedFields.numeroCartao ? 'border-green-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
                 placeholder="0000 0000 0000 0000"
-                required={formData.metodoPagamento === 'cartao'}
               />
-              {errors.numeroCartao && <p className="mt-1 text-xs text-red-500">{errors.numeroCartao}</p>}
+              {errors.numeroCartao && <p className="mt-1 text-xs text-red-500">{errors.numeroCartao.message}</p>}
             </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700">Nome no Cartão</label>
               <input
                 type="text"
-                name="nomeCartao"
-                value={formData.nomeCartao}
-                onChange={handleInputChange}
-                className={`mt-1 w-full rounded-md border ${errors.nomeCartao ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
-                required={formData.metodoPagamento === 'cartao'}
+                {...register('nomeCartao', {
+                  onChange: () => trigger('nomeCartao')
+                })}
+                className={`mt-1 w-full rounded-md border ${errors.nomeCartao ? 'border-red-500' : touchedFields.nomeCartao ? 'border-green-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
               />
-              {errors.nomeCartao && <p className="mt-1 text-xs text-red-500">{errors.nomeCartao}</p>}
+              {errors.nomeCartao && <p className="mt-1 text-xs text-red-500">{errors.nomeCartao.message}</p>}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Validade</label>
               <input
                 type="text"
-                name="validadeCartao"
-                value={formData.validadeCartao}
-                onChange={(e) => handleInputChange(e, formatValidade)}
+                {...register('validadeCartao')}
+                onChange={handleValidadeChange}
                 maxLength={5}
                 placeholder="MM/AA"
-                className={`mt-1 w-full rounded-md border ${errors.validadeCartao ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
-                required={formData.metodoPagamento === 'cartao'}
+                className={`mt-1 w-full rounded-md border ${errors.validadeCartao ? 'border-red-500' : touchedFields.validadeCartao ? 'border-green-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
               />
-              {errors.validadeCartao && <p className="mt-1 text-xs text-red-500">{errors.validadeCartao}</p>}
+              {errors.validadeCartao && <p className="mt-1 text-xs text-red-500">{errors.validadeCartao.message}</p>}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">CVV</label>
               <input
                 type="text"
-                name="cvv"
-                value={formData.cvv}
-                onChange={(e) => {
-                  const value = e.target.value.replace(/\D/g, '');
-                  handleChange({ target: { name: 'cvv', value } });
-                }}
+                {...register('cvv')}
+                onChange={handleCVVChange}
                 maxLength={4}
-                className={`mt-1 w-full rounded-md border ${errors.cvv ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
-                required={formData.metodoPagamento === 'cartao'}
+                className={`mt-1 w-full rounded-md border ${errors.cvv ? 'border-red-500' : touchedFields.cvv ? 'border-green-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
               />
-              {errors.cvv && <p className="mt-1 text-xs text-red-500">{errors.cvv}</p>}
+              {errors.cvv && <p className="mt-1 text-xs text-red-500">{errors.cvv.message}</p>}
             </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700">Parcelamento</label>
               <select
-                name="parcelas"
-                value={formData.parcelas}
-                onChange={handleInputChange}
-                className="mt-1 w-full rounded-md border border-gray-300 p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500"
-                required={formData.metodoPagamento === 'cartao'}
+                {...register('parcelas', {
+                  onChange: () => trigger('parcelas')
+                })}
+                className={`mt-1 w-full rounded-md border ${errors.parcelas ? 'border-red-500' : touchedFields.parcelas ? 'border-green-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
               >
                 {[...Array(12)].map((_, i) => {
                   const parcelas = i + 1;
@@ -103,12 +115,13 @@ const Pagamento = ({ formData, handleChange, errors, total }) => {
                   );
                 })}
               </select>
+              {errors.parcelas && <p className="mt-1 text-xs text-red-500">{errors.parcelas.message}</p>}
             </div>
           </div>
         </div>
       )}
 
-      {formData.metodoPagamento === 'boleto' && (
+      {metodoPagamento === 'boleto' && (
         <div className="mt-4 space-y-4 rounded-lg border border-gray-300 bg-gray-50 p-4">
           <p className="text-gray-700">
             O boleto será gerado após a confirmação do pedido e enviado para o seu e-mail.
@@ -120,7 +133,7 @@ const Pagamento = ({ formData, handleChange, errors, total }) => {
         </div>
       )}
 
-      {formData.metodoPagamento === 'pix' && (
+      {metodoPagamento === 'pix' && (
         <div className="mt-4 space-y-4 rounded-lg border border-gray-300 bg-gray-50 p-4">
           <p className="text-gray-700">
             O QR Code do PIX será gerado após a confirmação do pedido.
@@ -136,16 +149,6 @@ const Pagamento = ({ formData, handleChange, errors, total }) => {
 };
 
 Pagamento.propTypes = {
-  formData: PropTypes.shape({
-    metodoPagamento: PropTypes.string.isRequired,
-    numeroCartao: PropTypes.string.isRequired,
-    nomeCartao: PropTypes.string.isRequired,
-    validadeCartao: PropTypes.string.isRequired,
-    cvv: PropTypes.string.isRequired,
-    parcelas: PropTypes.string.isRequired,
-  }).isRequired,
-  handleChange: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
   total: PropTypes.number.isRequired,
 };
 

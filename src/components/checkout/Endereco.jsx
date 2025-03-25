@@ -1,11 +1,18 @@
-import PropTypes from 'prop-types';
+import { useFormContext } from 'react-hook-form';
 import { formatCEP } from '../../utils/formatters';
 
-const Endereco = ({ formData, handleChange, errors }) => {
-  const handleInputChange = (e, formatter = null) => {
-    const { name, value } = e.target;
-    const formattedValue = formatter ? formatter(value) : value;
-    handleChange({ target: { name, value: formattedValue } });
+const Endereco = () => {
+  const {
+    register,
+    formState: { errors, touchedFields },
+    setValue,
+    trigger
+  } = useFormContext();
+
+  const handleCEPChange = async (e) => {
+    const formatted = formatCEP(e.target.value);
+    setValue('cep', formatted, { shouldValidate: true });
+    await trigger('cep');
   };
 
   return (
@@ -15,46 +22,40 @@ const Endereco = ({ formData, handleChange, errors }) => {
           <label className="block text-sm font-medium text-gray-700">CEP</label>
           <input
             type="text"
-            name="cep"
-            value={formData.cep}
-            onChange={(e) => handleInputChange(e, formatCEP)}
+            {...register('cep')}
+            onChange={handleCEPChange}
             maxLength={9}
-            className={`mt-1 w-full rounded-md border ${errors.cep ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
-            required
+            className={`mt-1 w-full rounded-md border ${errors.cep ? 'border-red-500' : touchedFields.cep ? 'border-green-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
           />
-          {errors.cep && <p className="mt-1 text-xs text-red-500">{errors.cep}</p>}
+          {errors.cep && <p className="mt-1 text-xs text-red-500">{errors.cep.message}</p>}
         </div>
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-gray-700">Endereço</label>
           <input
             type="text"
-            name="endereco"
-            value={formData.endereco}
-            onChange={handleInputChange}
-            className={`mt-1 w-full rounded-md border ${errors.endereco ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
-            required
+            {...register('endereco', {
+              onChange: () => trigger('endereco')
+            })}
+            className={`mt-1 w-full rounded-md border ${errors.endereco ? 'border-red-500' : touchedFields.endereco ? 'border-green-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
           />
-          {errors.endereco && <p className="mt-1 text-xs text-red-500">{errors.endereco}</p>}
+          {errors.endereco && <p className="mt-1 text-xs text-red-500">{errors.endereco.message}</p>}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Número</label>
           <input
             type="text"
-            name="numero"
-            value={formData.numero}
-            onChange={handleInputChange}
-            className={`mt-1 w-full rounded-md border ${errors.numero ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
-            required
+            {...register('numero', {
+              onChange: () => trigger('numero')
+            })}
+            className={`mt-1 w-full rounded-md border ${errors.numero ? 'border-red-500' : touchedFields.numero ? 'border-green-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
           />
-          {errors.numero && <p className="mt-1 text-xs text-red-500">{errors.numero}</p>}
+          {errors.numero && <p className="mt-1 text-xs text-red-500">{errors.numero.message}</p>}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Complemento</label>
           <input
             type="text"
-            name="complemento"
-            value={formData.complemento}
-            onChange={handleInputChange}
+            {...register('complemento')}
             className="mt-1 w-full rounded-md border border-gray-300 p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500"
           />
         </div>
@@ -62,34 +63,31 @@ const Endereco = ({ formData, handleChange, errors }) => {
           <label className="block text-sm font-medium text-gray-700">Bairro</label>
           <input
             type="text"
-            name="bairro"
-            value={formData.bairro}
-            onChange={handleInputChange}
-            className={`mt-1 w-full rounded-md border ${errors.bairro ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
-            required
+            {...register('bairro', {
+              onChange: () => trigger('bairro')
+            })}
+            className={`mt-1 w-full rounded-md border ${errors.bairro ? 'border-red-500' : touchedFields.bairro ? 'border-green-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
           />
-          {errors.bairro && <p className="mt-1 text-xs text-red-500">{errors.bairro}</p>}
+          {errors.bairro && <p className="mt-1 text-xs text-red-500">{errors.bairro.message}</p>}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Cidade</label>
           <input
             type="text"
-            name="cidade"
-            value={formData.cidade}
-            onChange={handleInputChange}
-            className={`mt-1 w-full rounded-md border ${errors.cidade ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
-            required
+            {...register('cidade', {
+              onChange: () => trigger('cidade')
+            })}
+            className={`mt-1 w-full rounded-md border ${errors.cidade ? 'border-red-500' : touchedFields.cidade ? 'border-green-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
           />
-          {errors.cidade && <p className="mt-1 text-xs text-red-500">{errors.cidade}</p>}
+          {errors.cidade && <p className="mt-1 text-xs text-red-500">{errors.cidade.message}</p>}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Estado</label>
           <select
-            name="estado"
-            value={formData.estado}
-            onChange={handleInputChange}
-            className={`mt-1 w-full rounded-md border ${errors.estado ? 'border-red-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
-            required
+            {...register('estado', {
+              onChange: () => trigger('estado')
+            })}
+            className={`mt-1 w-full rounded-md border ${errors.estado ? 'border-red-500' : touchedFields.estado ? 'border-green-500' : 'border-gray-300'} p-2 focus:border-primary-500 focus:outline-none focus:ring-primary-500`}
           >
             <option value="">Selecione</option>
             <option value="AC">Acre</option>
@@ -120,25 +118,11 @@ const Endereco = ({ formData, handleChange, errors }) => {
             <option value="SE">Sergipe</option>
             <option value="TO">Tocantins</option>
           </select>
-          {errors.estado && <p className="mt-1 text-xs text-red-500">{errors.estado}</p>}
+          {errors.estado && <p className="mt-1 text-xs text-red-500">{errors.estado.message}</p>}
         </div>
       </div>
     </div>
   );
-};
-
-Endereco.propTypes = {
-  formData: PropTypes.shape({
-    cep: PropTypes.string.isRequired,
-    endereco: PropTypes.string.isRequired,
-    numero: PropTypes.string.isRequired,
-    complemento: PropTypes.string,
-    bairro: PropTypes.string.isRequired,
-    cidade: PropTypes.string.isRequired,
-    estado: PropTypes.string.isRequired,
-  }).isRequired,
-  handleChange: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
 };
 
 export default Endereco; 
